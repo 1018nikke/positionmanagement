@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>仓位计算器 · Position Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- ── Header ─────────────────────────────────────────── -->
+    <header class="header">
+      <h1>仓位计算器</h1>
+      <p class="subtitle">Fixed-Risk Position Size Calculator</p>
+    </header>
+
+    <!-- ── Direction ──────────────────────────────────────── -->
+    <section class="section">
+      <div class="section-label">交易方向 · Direction</div>
+      <div class="direction-group">
+        <button class="btn-direction long" id="direction-long" type="button">
+          <span class="direction-icon">▲</span>
+          做多
+        </button>
+        <button class="btn-direction short" id="direction-short" type="button">
+          <span class="direction-icon">▼</span>
+          做空
+        </button>
+      </div>
+      <div id="direction-error" class="input-error"></div>
+    </section>
+
+    <!-- ── Parameters ─────────────────────────────────────── -->
+    <section class="section">
+      <div class="section-label">交易参数 · Parameters</div>
+      <div class="input-grid">
+        <div class="input-group">
+          <label class="input-label" for="capital">账户总资金</label>
+          <span class="input-icon">$</span>
+          <input class="input-field" id="capital" type="text" inputmode="decimal" placeholder="0.00" autocomplete="off">
+          <div id="capital-error" class="input-error"></div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" for="risk-percent">单笔最大风险比例</label>
+          <span class="input-icon">%</span>
+          <input class="input-field" id="risk-percent" type="text" inputmode="decimal" placeholder="1.0" autocomplete="off">
+          <div id="risk-error" class="input-error"></div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" for="entry-price">标的入场价格</label>
+          <span class="input-icon">$</span>
+          <input class="input-field" id="entry-price" type="text" inputmode="decimal" placeholder="0.00" autocomplete="off">
+          <div id="entry-error" class="input-error"></div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" for="stop-price">标的止损价格</label>
+          <span class="input-icon">$</span>
+          <input class="input-field" id="stop-price" type="text" inputmode="decimal" placeholder="0.00" autocomplete="off">
+          <div id="stop-error" class="input-error"></div>
+        </div>
+      </div>
+      <button class="btn-calculate" id="btn-calculate" type="button">开始计算</button>
+    </section>
+
+    <!-- ── Results ────────────────────────────────────────── -->
+    <section class="section">
+      <div class="section-label">计算结果 · Results</div>
+      <div class="results-card" id="results-card">
+
+        <!-- Empty state -->
+        <div class="empty-state" id="empty-state">
+          <div class="empty-icon">◈</div>
+          <div class="empty-text">输入参数后将自动计算</div>
+        </div>
+
+        <!-- Results body -->
+        <div class="hidden" id="results-body">
+          <div class="results-grid" id="results-grid"></div>
+
+          <!-- Risk gauge -->
+          <div class="risk-gauge-section">
+            <div class="ring-container">
+              <svg viewBox="0 0 64 64">
+                <circle class="ring-bg" cx="32" cy="32" r="28"></circle>
+                <circle class="ring-fill" id="ring-fill" cx="32" cy="32" r="28"></circle>
+              </svg>
+              <div class="ring-label">
+                <span class="ring-value" id="ring-label-val">--</span>
+                <span class="ring-unit">%</span>
+              </div>
+            </div>
+            <div class="risk-info">
+              <div class="risk-title">风险敞口占比</div>
+              <div class="risk-desc" id="risk-desc">输入参数后展示风险评估</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  <!-- ── History ─────────────────────────────────────────── -->
+    <section class="section">
+      <div class="section-label" style="display:flex;align-items:center;justify-content:space-between;">
+        <span>历史记录 · History</span>
+        <button class="btn-clear-history" id="btn-clear-history" type="button">清空全部</button>
+      </div>
+      <div class="history-card" id="history-card">
+
+        <div class="empty-state" id="history-empty">
+          <div class="empty-icon">⏱</div>
+          <div class="empty-text">暂无计算记录</div>
+        </div>
+
+        <div class="hidden" id="history-body">
+          <div class="history-head">
+            <span>时间</span>
+            <span>交易方向</span>
+            <span>入场价</span>
+            <span>止损价</span>
+            <span>可开仓位</span>
+            <span>风险敞口占比</span>
+            <span></span>
+          </div>
+          <div class="history-list" id="history-list"></div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
